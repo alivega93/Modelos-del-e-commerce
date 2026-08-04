@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
@@ -125,9 +125,8 @@ def login_required_view(request):
 
     return render(request, template, context)
 
+# ProtectedListView
 
-
-# NUEVA VISTA PARA LA ACTIVIDAD
 class ProtectedListView(LoginRequiredMixin, ListView):
 
     model = ProductModel
@@ -136,3 +135,52 @@ class ProtectedListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ProductModel.objects.filter(user=self.request.user)
+
+# ==========================
+# VISTAS DE VENTAS
+# ==========================
+
+def ventas_view(request):
+    productos = ProductModel.objects.all()
+
+    carrito = request.session.get("carrito", [])
+
+    context = {
+        "productos": productos,
+        "carrito": carrito
+    }
+
+    return render(request, "ventas/ventas.html", context)
+
+
+def agregar_carrito(request, product_id):
+
+    producto = get_object_or_404(ProductModel, id=product_id)
+
+    carrito = request.session.get("carrito", [])
+
+    carrito.append({
+        "id": producto.id,
+        "titulo": producto.title,
+        "precio": producto.price
+    })
+
+    request.session["carrito"] = carrito
+
+    return redirect("ventas")
+
+
+def procesar_pedido(request):
+
+    if request.method == "POST":
+        request.session["carrito"] = []
+        return HttpResponse("¡Pedido realizado correctamente!")
+
+    return HttpResponse("Método no permitido.")
+
+
+def vaciar_carrito(request):
+
+    request.session["carrito"] = []
+
+    return redirect("ventas")

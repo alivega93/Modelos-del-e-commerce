@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ventas</title>
+</head>
+<body>
+
+    <h1>Gestión de Ventas</h1>
+
+    <h2>Lista de Productos</h2>
+
+    <ul>
+        {% for producto in productos %}
+            <li>
+                <strong>{{ producto.title }}</strong><br>
+                Precio: ${{ producto.price }}<br>
+                {{ producto.description }}<br><br>
+
+                <a href="{% url 'agregar_carrito' producto.id %}">
+                    Agregar al carrito
+                </a>
+            </li>
+            <hr>
+        {% empty %}
+            <li>No hay productos registrados.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Carrito de Compras</h2>
+
+    <ul>
+        {% for item in carrito %}
+            <li>
+                {{ item.titulo }} - ${{ item.precio }}
+            </li>
+        {% empty %}
+            <li>El carrito está vacío.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'vaciar_carrito' %}">
+        <button type="button">
+            Vaciar carrito
+        </button>
+    </a>
+
+    <form action="{% url 'procesar_pedido' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">
+            Procesar Pedido
+        </button>
+    </form>
+
+</body>
+</html>
