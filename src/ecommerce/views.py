@@ -91,8 +91,6 @@ def product_model_list_view(request):
             Q(price__icontains=query)
         )
 
-    template = "ecommerce/list-view.html"
-
     context = {
         "products": queryset
     }
@@ -108,11 +106,7 @@ def product_model_list_view(request):
 @login_required
 def login_required_view(request):
 
-    print(request.user)
-
     queryset = ProductModel.objects.all()
-
-    template = "ecommerce/list-view.html"
 
     context = {
         "products": queryset
@@ -125,7 +119,6 @@ def login_required_view(request):
 
     return render(request, template, context)
 
-# ProtectedListView
 
 class ProtectedListView(LoginRequiredMixin, ListView):
 
@@ -135,6 +128,7 @@ class ProtectedListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ProductModel.objects.filter(user=self.request.user)
+
 
 # ==========================
 # VISTAS DE VENTAS
@@ -174,7 +168,8 @@ def procesar_pedido(request):
 
     if request.method == "POST":
         request.session["carrito"] = []
-        return HttpResponse("¡Pedido realizado correctamente!")
+        messages.success(request, "Pedido realizado correctamente.")
+        return redirect("ventas")
 
     return HttpResponse("Método no permitido.")
 
