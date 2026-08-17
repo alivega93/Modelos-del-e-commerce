@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "address.apps.AddressConfig",
     "billing_profile.apps.BillingProfileConfig",
     "order_manager.apps.OrderManagerConfig",
+    "orders.apps.OrdersConfig",
 
     "django.contrib.admin",
     "django.contrib.auth",
