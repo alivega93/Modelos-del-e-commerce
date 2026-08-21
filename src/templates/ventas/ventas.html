@@ -1,64 +1,449 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Ventas</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Ventas</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #444;
+            margin-top: 35px;
+        }
+
+        .mensaje {
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .producto {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .producto strong {
+            font-size: 20px;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 8px 14px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .boton:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-vaciar {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-procesar {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .carrito {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .grafica {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 900px;
+        }
+
+        #ventasChart {
+            width: 100%;
+            max-height: 400px;
+        }
+
+    </style>
+
 </head>
+
+
 <body>
 
+    <!-- ================================= -->
+    <!-- MENSAJES -->
+    <!-- ================================= -->
+
     {% if messages %}
+
         {% for message in messages %}
-            <div style="padding:10px; margin-bottom:15px; background:#d4edda; color:#155724; border:1px solid #c3e6cb;">
+
+            <div class="mensaje">
+
                 {{ message }}
+
             </div>
+
         {% endfor %}
+
     {% endif %}
+
 
     <h1>Gestión de Ventas</h1>
 
+
+    <!-- ================================= -->
+    <!-- GRÁFICA -->
+    <!-- ================================= -->
+
+    <h2>Gráfica de Ventas</h2>
+
+    <div class="grafica">
+
+        <canvas id="ventasChart"></canvas>
+
+        <p id="mensajeGrafica">
+            Cargando datos...
+        </p>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- PRODUCTOS -->
+    <!-- ================================= -->
+
     <h2>Lista de Productos</h2>
 
-    <ul>
-        {% for producto in productos %}
-            <li>
-                <strong>{{ producto.title }}</strong><br>
-                Precio: ${{ producto.price }}<br>
-                {{ producto.description }}<br><br>
+    {% for producto in productos %}
 
-                <a href="{% url 'agregar_carrito' producto.id %}">
-                    Agregar al carrito
-                </a>
-            </li>
-            <hr>
-        {% empty %}
-            <li>No hay productos registrados.</li>
-        {% endfor %}
-    </ul>
+        <div class="producto">
+
+            <strong>
+                {{ producto.title }}
+            </strong>
+
+            <br><br>
+
+            <strong>
+                Precio: ${{ producto.price }}
+            </strong>
+
+            <br><br>
+
+            {{ producto.description }}
+
+            <br>
+
+            <a
+                class="boton"
+                href="{% url 'agregar_carrito' producto.id %}"
+            >
+                Agregar al carrito
+            </a>
+
+        </div>
+
+    {% empty %}
+
+        <p>
+            No hay productos registrados.
+        </p>
+
+    {% endfor %}
+
+
+    <!-- ================================= -->
+    <!-- CARRITO -->
+    <!-- ================================= -->
 
     <h2>Carrito de Compras</h2>
 
-    <ul>
-        {% for item in carrito %}
-            <li>
-                {{ item.titulo }} - ${{ item.precio }}
-            </li>
-        {% empty %}
-            <li>El carrito está vacío.</li>
-        {% endfor %}
-    </ul>
+    <div class="carrito">
 
-    <a href="{% url 'vaciar_carrito' %}">
-        <button type="button">
-            Vaciar carrito
-        </button>
-    </a>
+        {% if carrito %}
 
-    <form action="{% url 'procesar_pedido' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">
-            Procesar Pedido
-        </button>
-    </form>
+            <ul>
+
+                {% for item in carrito %}
+
+                    <li>
+
+                        {{ item.titulo }}
+
+                        -
+
+                        ${{ item.precio }}
+
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p>
+                El carrito está vacío.
+            </p>
+
+        {% endif %}
+
+
+        <br>
+
+
+        <a href="{% url 'vaciar_carrito' %}">
+
+            <button
+                type="button"
+                class="btn-vaciar"
+            >
+                Vaciar carrito
+            </button>
+
+        </a>
+
+
+        <br><br>
+
+
+        <form
+            action="{% url 'procesar_pedido' %}"
+            method="post"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="btn-procesar"
+            >
+                Procesar Pedido
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ================================= -->
+
+    <script>
+
+        console.log("Iniciando gráfica...");
+
+
+        fetch("{% url 'ventas_data' %}")
+
+            .then(response => {
+
+                console.log(
+                    "Respuesta del servidor:",
+                    response.status
+                );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Error HTTP: " + response.status
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+            .then(data => {
+
+                console.log(
+                    "Datos recibidos:",
+                    data
+                );
+
+
+                const canvas =
+                    document.getElementById(
+                        "ventasChart"
+                    );
+
+
+                const mensaje =
+                    document.getElementById(
+                        "mensajeGrafica"
+                    );
+
+
+                if (
+                    !data.labels ||
+                    !data.data
+                ) {
+
+                    mensaje.innerText =
+                        "No se recibieron datos.";
+
+                    return;
+
+                }
+
+
+                if (
+                    data.labels.length === 0
+                ) {
+
+                    mensaje.innerText =
+                        "Todavía no hay ventas registradas.";
+
+                    return;
+
+                }
+
+
+                mensaje.style.display =
+                    "none";
+
+
+                new Chart(
+                    canvas,
+                    {
+
+                        type: "bar",
+
+                        data: {
+
+                            labels: data.labels,
+
+                            datasets: [
+
+                                {
+
+                                    label:
+                                        "Ventas",
+
+                                    data:
+                                        data.data,
+
+                                    backgroundColor:
+                                        "rgba(54, 162, 235, 0.6)",
+
+                                    borderColor:
+                                        "rgba(54, 162, 235, 1)",
+
+                                    borderWidth: 1
+
+                                }
+
+                            ]
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            scales: {
+
+                                y: {
+
+                                    beginAtZero: true,
+
+                                    title: {
+
+                                        display: true,
+
+                                        text:
+                                            "Total de venta ($)"
+
+                                    }
+
+                                },
+
+                                x: {
+
+                                    title: {
+
+                                        display: true,
+
+                                        text:
+                                            "Fecha"
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Error al cargar la gráfica:",
+                    error
+                );
+
+
+                document.getElementById(
+                    "mensajeGrafica"
+                ).innerText =
+                    "No se pudieron cargar los datos de ventas.";
+
+            });
+
+    </script>
+
 
 </body>
+
 </html>
