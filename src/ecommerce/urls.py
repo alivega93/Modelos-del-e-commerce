@@ -82,4 +82,14 @@ urlpatterns = [
         views.ventas_data_view,
         name="ventas_data"
     ),
+
+    # ==========================================
+    # REGISTRO DE USUARIOS
+    # ==========================================
+
+    path(
+        "registro/",
+        views.registro_view,
+        name="registro"
+    ),
 ]

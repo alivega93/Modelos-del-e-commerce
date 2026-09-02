@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 
-from .forms import ProductModelForm
+from .forms import ProductModelForm, UserRegistrationForm
 from .models import ProductModel
 
 from orders.models import Order
@@ -440,4 +440,44 @@ def ventas_data_view(request):
             "labels": labels,
             "data": data
         }
+    )
+
+
+# =========================================================
+# REGISTRO DE USUARIOS
+# =========================================================
+
+def registro_view(request):
+
+    form = UserRegistrationForm(
+        request.POST or None
+    )
+
+    if form.is_valid():
+
+        user = form.save(
+            commit=False
+        )
+
+        user.set_password(
+            form.cleaned_data["password"]
+        )
+
+        user.save()
+
+        messages.success(
+            request,
+            "Usuario registrado correctamente."
+        )
+
+        return redirect("registro")
+
+    context = {
+        "form": form
+    }
+
+    return render(
+        request,
+        "ecommerce/registro.html",
+        context
     )
