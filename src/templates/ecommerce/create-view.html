@@ -1,12 +1,71 @@
-{% include "ecommerce/messages.html" %}
+{% extends "layouts/index.html" %}
 
-<h1>
-    Crear un nuevo producto
-</h1>
+{% block title %}
+Vender producto | MiTienda
+{% endblock %}
 
-<form method="POST" action="" > {% csrf_token %}
-    {{form.as_p}}
+{% block hero %}
+{% endblock %}
 
-    <input type="submit" value="Crear">
+{% block section_title %}
+{% endblock %}
 
-</form>
+{% block content %}
+
+<section class="create-page">
+
+    <div class="create-card">
+
+        <div class="create-header">
+
+            <span class="create-label">
+                Publicar producto
+            </span>
+
+            <h1>
+                Vender un producto
+            </h1>
+
+            <p>
+                Completa la información de tu producto para publicarlo en MiTienda.
+            </p>
+
+        </div>
+
+        {% include "ecommerce/messages.html" %}
+
+        <form method="POST" action="" class="create-form">
+
+            {% csrf_token %}
+
+            {% for field in form %}
+
+                <div class="create-field">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <div class="field-error">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+            <button type="submit" class="create-button">
+                Publicar producto
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

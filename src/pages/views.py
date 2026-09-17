@@ -1,4 +1,4 @@
-import os
+import platform
 
 from django import get_version
 from django.conf import settings
@@ -19,7 +19,7 @@ def home(request):
     context = {
         "debug": settings.DEBUG,
         "django_ver": get_version() + " PROBANDO CAMBIOS",
-        "python_ver": os.environ["PYTHON_VERSION"] + " MAS CAMBIOS",        
+        "python_ver": platform.python_version(),
         "project_name": proyecto.nombre,
         "project_author": proyecto.autora,
     }

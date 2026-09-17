@@ -1,37 +1,105 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Registro de usuario</title>
-</head>
+{% extends "layouts/index.html" %}
 
-<body>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+{% block title %}
+Crear cuenta | MiTienda
+{% endblock %}
 
-    <h1>Registro de usuario</h1>
 
-    <form method="POST">
+{% block hero %}
+{% endblock %}
 
-        {% csrf_token %}
 
-        {{ form.as_p }}
+{% block section_title %}
+{% endblock %}
 
-        <button type="submit">
-            Registrarse
-        </button>
 
-    </form>
+{% block content %}
 
-    <br>
+<section class="register-page">
 
-    <a href="{% url 'list' %}">
-        Volver a productos
-    </a>
+    <div class="register-card">
 
-</body>
-</html>
+        <div class="register-header">
+
+            <span class="register-label">
+                Únete a MiTienda
+            </span>
+
+            <h1>
+                Crear una cuenta
+            </h1>
+
+            <p>
+                Regístrate para comprar, vender y gestionar tus productos.
+            </p>
+
+        </div>
+
+
+        {% include "ecommerce/messages.html" %}
+
+
+        <form method="POST" class="register-form">
+
+            {% csrf_token %}
+
+
+            {% for field in form %}
+
+                <div class="register-field">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+
+                        <div class="register-error">
+                            {{ field.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <button
+                type="submit"
+                class="register-button"
+            >
+                Crear cuenta
+            </button>
+
+        </form>
+
+
+        <div class="register-footer">
+
+            <span>
+                ¿Ya tienes una cuenta?
+            </span>
+
+            <a href="{% url 'login' %}">
+                Iniciar sesión
+            </a>
+
+        </div>
+
+
+        <a
+            href="{% url 'productos' %}"
+            class="register-back"
+        >
+            ← Volver a productos
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

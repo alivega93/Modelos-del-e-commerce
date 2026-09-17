@@ -1,0 +1,38 @@
+<div class="product-card">
+
+    <div class="product-card-content">
+
+        <h3 class="product-title">
+            <a href="{% url 'detail' product.id %}">
+                {{ product.title|upper }}
+            </a>
+        </h3>
+
+        <p class="product-description">
+            {{ product.description|default:"Sin descripción disponible." }}
+        </p>
+
+        <div class="product-card-footer">
+
+            <span class="product-price">
+                ${{ product.price|floatformat:2 }}
+            </span>
+
+            <a
+                href="{% url 'detail' product.id %}"
+                class="product-button"
+            >
+                Ver producto
+            </a>
+
+        </div>
+
+        {% if forloop.counter|divisibleby:2 %}
+            <small class="product-position">
+                Producto en posición par
+            </small>
+        {% endif %}
+
+    </div>
+
+</div>

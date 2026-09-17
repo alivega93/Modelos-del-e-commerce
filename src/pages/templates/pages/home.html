@@ -1,23 +1,157 @@
 {% extends "layouts/index.html" %}
-{% load static %}
 
-{% block title %}Docker + Django{% endblock %}
+{% block title %}
+Inicio | MiTienda
+{% endblock %}
 
-{% block body %}
-  <div class="flex justify-center pt-24 pb-12 px-2 sm:px-0">
-    <img src="{% static 'images/django.png' %}"
-         width="480" height="167" alt="Django logo" />
-  </div>
+{% block hero %}
 
-  <div class="text-center mt-4">
-      <p><strong>Proyecto:</strong> {{ project_name }}</p>
-      <p><strong>Autora:</strong> {{ project_author }}</p>
-  </div>
+<section class="hero">
 
-  <p class="text-center text-lg mt-6">
-   🐳 Learn the Docker fundamentals at:
-    <strong>
-      <a class="border-b border-gray-900 mb-1" href="https://diveintodocker.com?ref=docker-django-example">https://diveintodocker.com</a>
-    </strong>
-  </p>
+    <div class="hero-content">
+
+        <span class="hero-badge">
+            ✨ Bienvenido a MiTienda
+        </span>
+
+        <h1>
+            Compra, vende y encuentra todo en un solo lugar.
+        </h1>
+
+        <p>
+            Descubre productos, publica los tuyos y disfruta
+            de una experiencia sencilla para comprar y vender.
+        </p>
+
+        <div class="hero-actions">
+
+            <a
+                href="{% url 'productos' %}"
+                class="hero-button"
+            >
+                Explorar productos
+            </a>
+
+            <a
+                href="{% url 'create' %}"
+                class="hero-button secondary-button"
+            >
+                Vender un producto
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block section_title %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="home-section">
+
+    <div class="home-heading">
+
+        <span class="home-label">
+            ¿Qué quieres hacer?
+        </span>
+
+        <h2>
+            Todo lo que necesitas para comprar y vender
+        </h2>
+
+        <p>
+            Explora nuestra tienda o publica tus propios productos
+            de manera rápida y sencilla.
+        </p>
+
+    </div>
+
+
+    <div class="home-cards">
+
+        <a
+            href="{% url 'productos' %}"
+            class="home-card"
+        >
+
+            <div class="home-card-icon">
+                🛍️
+            </div>
+
+            <h3>
+                Comprar productos
+            </h3>
+
+            <p>
+                Explora los productos disponibles y encuentra
+                lo que estás buscando.
+            </p>
+
+            <span>
+                Ver productos →
+            </span>
+
+        </a>
+
+
+        <a
+            href="{% url 'create' %}"
+            class="home-card"
+        >
+
+            <div class="home-card-icon">
+                ✨
+            </div>
+
+            <h3>
+                Vender productos
+            </h3>
+
+            <p>
+                Publica tus productos y permite que otros
+                usuarios los descubran.
+            </p>
+
+            <span>
+                Publicar producto →
+            </span>
+
+        </a>
+
+
+        <a
+            href="{% url 'ventas' %}"
+            class="home-card"
+        >
+
+            <div class="home-card-icon">
+                📊
+            </div>
+
+            <h3>
+                Gestionar ventas
+            </h3>
+
+            <p>
+                Consulta tus ventas y administra tu proceso
+                de compra de forma sencilla.
+            </p>
+
+            <span>
+                Ir a ventas →
+            </span>
+
+        </a>
+
+    </div>
+
+</div>
+
 {% endblock %}

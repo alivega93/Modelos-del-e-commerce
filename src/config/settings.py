@@ -32,7 +32,7 @@ TESTING = "test" in sys.argv
 allowed_hosts = os.getenv("ALLOWED_HOSTS", ".localhost,127.0.0.1,[::1]")
 ALLOWED_HOSTS = list(map(str.strip, allowed_hosts.split(",")))
 
-LOGIN_URL = "/admin/login/"
+LOGIN_URL = "/ecommerce/login/"
 
 # Application definitions
 INSTALLED_APPS = [
@@ -160,7 +160,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR.parent / "public"]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR.parent / "public_collected"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 

@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -13,6 +14,48 @@ from orders.models import Order
 from cart.models import Cart
 from product.models import Product
 
+
+# =========================================================
+# LOGIN DE USUARIOS
+# =========================================================
+
+def login_view(request):
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+
+            login(
+                request,
+                user
+            )
+
+            return redirect("home")
+
+        messages.error(
+            request,
+            "Usuario o contraseña incorrectos."
+        )
+
+    return render(
+        request,
+        "ecommerce/login.html"
+    )
+
+def logout_view(request):
+
+    logout(request)
+
+    return redirect("home")
 
 # =========================================================
 # VISTAS DE PRODUCTOS
@@ -214,6 +257,14 @@ class ProtectedListView(
         return ProductModel.objects.filter(
             user=self.request.user
         )
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context["my_products"] = True
+
+        return context
 
 
 # =========================================================

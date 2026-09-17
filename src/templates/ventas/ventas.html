@@ -1,419 +1,386 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "layouts/index.html" %}
 
-<head>
+{% block title %}
+Ventas | MiTienda
+{% endblock %}
 
-    <meta charset="UTF-8">
+{% block hero %}
+{% endblock %}
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+{% block section_title %}
+{% endblock %}
 
-    <title>Gestión de Ventas</title>
+{% block content %}
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="sales-page">
 
-    <style>
+    <div class="sales-header">
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f5f5f5;
-        }
+        <span class="sales-label">
+            Gestión de ventas
+        </span>
 
-        h1 {
-            color: #333;
-        }
+        <h1>
+            Ventas
+        </h1>
 
-        h2 {
-            color: #444;
-            margin-top: 35px;
-        }
-
-        .mensaje {
-            padding: 12px;
-            margin-bottom: 15px;
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
-        }
-
-        .producto {
-            background: white;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .producto strong {
-            font-size: 20px;
-        }
-
-        .boton {
-            display: inline-block;
-            padding: 8px 14px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .boton:hover {
-            background-color: #0056b3;
-        }
-
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-vaciar {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-procesar {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .carrito {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .grafica {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 900px;
-        }
-
-        #ventasChart {
-            width: 100%;
-            max-height: 400px;
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-    <!-- ================================= -->
-    <!-- MENSAJES -->
-    <!-- ================================= -->
-
-    {% if messages %}
-
-        {% for message in messages %}
-
-            <div class="mensaje">
-
-                {{ message }}
-
-            </div>
-
-        {% endfor %}
-
-    {% endif %}
-
-
-    <h1>Gestión de Ventas</h1>
-
-
-    <!-- ================================= -->
-    <!-- GRÁFICA -->
-    <!-- ================================= -->
-
-    <h2>Gráfica de Ventas</h2>
-
-    <div class="grafica">
-
-        <canvas id="ventasChart"></canvas>
-
-        <p id="mensajeGrafica">
-            Cargando datos...
+        <p>
+            Consulta tus ventas, explora productos y administra tu carrito.
         </p>
 
     </div>
 
 
-    <!-- ================================= -->
-    <!-- PRODUCTOS -->
-    <!-- ================================= -->
+    {% include "ecommerce/messages.html" %}
 
-    <h2>Lista de Productos</h2>
 
-    {% for producto in productos %}
+    <!-- GRÁFICA -->
 
-        <div class="producto">
+    <section class="sales-card">
 
-            <strong>
-                {{ producto.title }}
-            </strong>
+        <div class="sales-card-header">
 
-            <br><br>
+            <div>
+                <h2>
+                    Resumen de ventas
+                </h2>
 
-            <strong>
-                Precio: ${{ producto.price }}
-            </strong>
+                <p>
+                    Visualiza el total de tus ventas por fecha.
+                </p>
+            </div>
 
-            <br><br>
-
-            {{ producto.description }}
-
-            <br>
-
-            <a
-                class="boton"
-                href="{% url 'agregar_carrito' producto.id %}"
-            >
-                Agregar al carrito
-            </a>
+            <span class="sales-icon">
+                📊
+            </span>
 
         </div>
 
-    {% empty %}
+        <div class="sales-chart">
 
-        <p>
-            No hay productos registrados.
-        </p>
+            <canvas id="ventasChart"></canvas>
 
-    {% endfor %}
+            <p id="mensajeGrafica">
+                Cargando datos...
+            </p>
+
+        </div>
+
+    </section>
 
 
-    <!-- ================================= -->
+    <!-- PRODUCTOS -->
+
+    <section class="sales-card">
+
+        <div class="sales-card-header">
+
+            <div>
+                <h2>
+                    Productos
+                </h2>
+
+                <p>
+                    Selecciona un producto para agregarlo al carrito.
+                </p>
+            </div>
+
+            <span class="sales-icon">
+                🛍️
+            </span>
+
+        </div>
+
+
+        <div class="sales-products">
+
+            {% for producto in productos %}
+
+                <div class="sales-product">
+
+                    <div class="sales-product-info">
+
+                        <h3>
+                            {{ producto.title }}
+                        </h3>
+
+                        <p>
+                            {{ producto.description }}
+                        </p>
+
+                        <strong>
+                            ${{ producto.price|floatformat:2 }}
+                        </strong>
+
+                    </div>
+
+
+                    <a
+                        class="sales-product-button"
+                        href="{% url 'agregar_carrito' producto.id %}"
+                    >
+                        Agregar al carrito
+                    </a>
+
+                </div>
+
+            {% empty %}
+
+                <div class="sales-empty">
+
+                    <h3>
+                        No hay productos registrados
+                    </h3>
+
+                    <p>
+                        Actualmente no hay productos disponibles.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
     <!-- CARRITO -->
-    <!-- ================================= -->
 
-    <h2>Carrito de Compras</h2>
+    <section class="sales-card cart-card">
 
-    <div class="carrito">
+        <div class="sales-card-header">
+
+            <div>
+                <h2>
+                    Carrito de compras
+                </h2>
+
+                <p>
+                    Revisa los productos antes de procesar tu pedido.
+                </p>
+            </div>
+
+            <span class="sales-icon">
+                🛒
+            </span>
+
+        </div>
+
 
         {% if carrito %}
 
-            <ul>
+            <div class="cart-items">
 
                 {% for item in carrito %}
 
-                    <li>
+                    <div class="cart-item">
 
-                        {{ item.titulo }}
+                        <span>
+                            {{ item.titulo }}
+                        </span>
 
-                        -
+                        <strong>
+                            ${{ item.precio|floatformat:2 }}
+                        </strong>
 
-                        ${{ item.precio }}
-
-                    </li>
+                    </div>
 
                 {% endfor %}
 
-            </ul>
+            </div>
 
         {% else %}
 
-            <p>
-                El carrito está vacío.
-            </p>
+            <div class="cart-empty">
+
+                <span class="cart-empty-icon">
+                    🛒
+                </span>
+
+                <h3>
+                    Tu carrito está vacío
+                </h3>
+
+                <p>
+                    Agrega productos para comenzar tu compra.
+                </p>
+
+            </div>
 
         {% endif %}
 
 
-        <br>
+        <div class="cart-actions">
 
-
-        <a href="{% url 'vaciar_carrito' %}">
-
-            <button
-                type="button"
-                class="btn-vaciar"
+            <a
+                href="{% url 'vaciar_carrito' %}"
+                class="cart-clear-button"
             >
                 Vaciar carrito
-            </button>
-
-        </a>
+            </a>
 
 
-        <br><br>
-
-
-        <form
-            action="{% url 'procesar_pedido' %}"
-            method="post"
-        >
-
-            {% csrf_token %}
-
-            <button
-                type="submit"
-                class="btn-procesar"
+            <form
+                action="{% url 'procesar_pedido' %}"
+                method="post"
             >
-                Procesar Pedido
-            </button>
 
-        </form>
+                {% csrf_token %}
 
-    </div>
+                <button
+                    type="submit"
+                    class="cart-process-button"
+                >
+                    Procesar pedido
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</div>
 
 
-    <!-- ================================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ================================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
+<script>
 
-        console.log("Iniciando gráfica...");
+    console.log("Iniciando gráfica...");
 
+    fetch("{% url 'ventas_data' %}")
 
-        fetch("{% url 'ventas_data' %}")
+        .then(response => {
 
-            .then(response => {
+            console.log(
+                "Respuesta del servidor:",
+                response.status
+            );
 
-                console.log(
-                    "Respuesta del servidor:",
-                    response.status
+            if (!response.ok) {
+
+                throw new Error(
+                    "Error HTTP: " + response.status
                 );
 
-                if (!response.ok) {
+            }
 
-                    throw new Error(
-                        "Error HTTP: " + response.status
-                    );
+            return response.json();
 
-                }
+        })
 
-                return response.json();
+        .then(data => {
 
-            })
+            console.log(
+                "Datos recibidos:",
+                data
+            );
 
-            .then(data => {
-
-                console.log(
-                    "Datos recibidos:",
-                    data
+            const canvas =
+                document.getElementById(
+                    "ventasChart"
                 );
 
+            const mensaje =
+                document.getElementById(
+                    "mensajeGrafica"
+                );
 
-                const canvas =
-                    document.getElementById(
-                        "ventasChart"
-                    );
+            if (
+                !data.labels ||
+                !data.data
+            ) {
 
+                mensaje.innerText =
+                    "No se recibieron datos.";
 
-                const mensaje =
-                    document.getElementById(
-                        "mensajeGrafica"
-                    );
+                return;
 
+            }
 
-                if (
-                    !data.labels ||
-                    !data.data
-                ) {
+            if (
+                data.labels.length === 0
+            ) {
 
-                    mensaje.innerText =
-                        "No se recibieron datos.";
+                mensaje.innerText =
+                    "Todavía no hay ventas registradas.";
 
-                    return;
+                return;
 
-                }
+            }
 
+            mensaje.style.display =
+                "none";
 
-                if (
-                    data.labels.length === 0
-                ) {
+            new Chart(
+                canvas,
+                {
 
-                    mensaje.innerText =
-                        "Todavía no hay ventas registradas.";
+                    type: "bar",
 
-                    return;
+                    data: {
 
-                }
+                        labels: data.labels,
 
+                        datasets: [
 
-                mensaje.style.display =
-                    "none";
+                            {
 
+                                label:
+                                    "Ventas",
 
-                new Chart(
-                    canvas,
-                    {
+                                data:
+                                    data.data,
 
-                        type: "bar",
+                                backgroundColor:
+                                    "rgba(108, 63, 197, 0.65)",
 
-                        data: {
+                                borderColor:
+                                    "rgba(108, 63, 197, 1)",
 
-                            labels: data.labels,
+                                borderWidth: 1,
 
-                            datasets: [
+                                borderRadius: 8
 
-                                {
+                            }
 
-                                    label:
-                                        "Ventas",
+                        ]
 
-                                    data:
-                                        data.data,
+                    },
 
-                                    backgroundColor:
-                                        "rgba(54, 162, 235, 0.6)",
+                    options: {
 
-                                    borderColor:
-                                        "rgba(54, 162, 235, 1)",
+                        responsive: true,
 
-                                    borderWidth: 1
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                title: {
+
+                                    display: true,
+
+                                    text:
+                                        "Total de venta ($)"
 
                                 }
 
-                            ]
+                            },
 
-                        },
+                            x: {
 
-                        options: {
+                                title: {
 
-                            responsive: true,
+                                    display: true,
 
-                            scales: {
-
-                                y: {
-
-                                    beginAtZero: true,
-
-                                    title: {
-
-                                        display: true,
-
-                                        text:
-                                            "Total de venta ($)"
-
-                                    }
-
-                                },
-
-                                x: {
-
-                                    title: {
-
-                                        display: true,
-
-                                        text:
-                                            "Fecha"
-
-                                    }
+                                    text:
+                                        "Fecha"
 
                                 }
 
@@ -422,28 +389,26 @@
                         }
 
                     }
-                );
 
-            })
+                }
+            );
 
-            .catch(error => {
+        })
 
-                console.error(
-                    "Error al cargar la gráfica:",
-                    error
-                );
+        .catch(error => {
 
+            console.error(
+                "Error al cargar la gráfica:",
+                error
+            );
 
-                document.getElementById(
-                    "mensajeGrafica"
-                ).innerText =
-                    "No se pudieron cargar los datos de ventas.";
+            document.getElementById(
+                "mensajeGrafica"
+            ).innerText =
+                "No se pudieron cargar los datos de ventas.";
 
-            });
+        });
 
-    </script>
+</script>
 
-
-</body>
-
-</html>
+{% endblock %}

@@ -1,16 +1,24 @@
+{% extends "layouts/index.html" %}
+
+{% block title %}
+Eliminar producto
+{% endblock %}
+
+{% block content %}
+
 {% include "ecommerce/messages.html" %}
 
 <h1>
-Eliminar - {{ product.title }}
+    Eliminar - {{ product.title }}
 </h1>
 
 <p>Precio: {{ product.price }}</p>
-<p>Color: {{ product.color }}</p>
-<p>Vendedor: {{ product.seller }}</p>
 
 <form method="POST" action="">
     {% csrf_token %}
     ¿Estás seguro que quieres eliminar el producto?
     <input type="submit" value="Eliminar">
-    <a href="/ecommerce/{{ product.id }}">Cancelar</a>
+    <a href="{% url 'detail' product.id %}">Cancelar</a>
 </form>
+
+{% endblock %}

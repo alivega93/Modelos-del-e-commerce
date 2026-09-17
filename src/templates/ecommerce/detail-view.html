@@ -1,15 +1,58 @@
+{% extends "layouts/index.html" %}
+
+{% block title %}
+{{ product.title }} | MiTienda
+{% endblock %}
+
+{% block content %}
+
 {% include "ecommerce/messages.html" %}
 
-<h1>
-    {{ product.title }}
-</h1>
+<section class="detail-page">
 
-<p>Precio: {{ product.price }}</p>
+    <div class="detail-card">
 
-<p>Descripción: {{ product.description }}</p>
+        <div class="detail-info">
 
-<p>Vendedor: {{ product.seller }}</p>
+            <span class="detail-label">
+                Detalle del producto
+            </span>
 
-<p>Color: {{ product.color }}</p>
+            <h1 class="detail-title">
+                {{ product.title }}
+            </h1>
 
-<p>Dimensiones: {{ product.product_dimensions }}</p>
+            <div class="detail-price">
+                ${{ product.price|floatformat:2 }}
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-description">
+
+                <h2>Descripción</h2>
+
+                <p>
+                    {{ product.description }}
+                </p>
+
+            </div>
+
+            <div class="detail-actions">
+
+                <a
+                    href="{% url 'productos' %}"
+                    class="detail-button"
+                >
+                    ← Volver a productos
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

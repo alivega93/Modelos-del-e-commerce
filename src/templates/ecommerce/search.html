@@ -1,3 +1,23 @@
-<form method="GET" action="/ecommerce/">
-    <input type="text" name="q" placeholder="Buscar">
-</form>
+<div class="search-box">
+
+    <div class="search-text">
+        <h2>Buscar productos</h2>
+        <p>Encuentra rápidamente lo que estás buscando.</p>
+    </div>
+
+    <form method="GET" action="{% url 'productos' %}" class="search-form">
+
+        <input
+            type="text"
+            name="q"
+            placeholder="¿Qué producto estás buscando?"
+            value="{{ request.GET.q|default:'' }}"
+        >
+
+        <button type="submit">
+            Buscar
+        </button>
+
+    </form>
+
+</div>

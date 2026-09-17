@@ -1,5 +1,77 @@
-{% include "ecommerce/messages.html" %}
+{% extends "layouts/index.html" %}
 
-<h1>
-    Un Ecommerce genial, registrate
-</h1>
+
+{% block title %}
+Productos | MiTienda
+{% endblock %}
+
+
+{% block hero %}
+{% endblock %}
+
+
+{% block section_title %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="products-section">
+
+    {% include "ecommerce/messages.html" %}
+
+    <div class="products-header">
+
+        <div>
+
+            <h1>
+                Productos disponibles
+            </h1>
+
+            <p>
+                Descubre nuestra selección de productos.
+            </p>
+
+        </div>
+
+        <div>
+
+            <p>
+                ¿Quieres vender tus propios productos?
+                <a href="{% url 'login' %}">
+                    Inicia sesión
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="products-grid">
+
+        {% for product in products %}
+
+            {% include "ecommerce/product-item.html" with product=product %}
+
+        {% empty %}
+
+            <div class="empty-products">
+
+                <h3>
+                    No hay productos disponibles
+                </h3>
+
+                <p>
+                    Actualmente no hay productos para mostrar.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

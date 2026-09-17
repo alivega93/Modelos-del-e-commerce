@@ -1,18 +1,35 @@
 from django.urls import path
 
 from ecommerce import views
+from pages import views as pages_views
 
 
 urlpatterns = [
+
+    # ==========================================
+    # INICIO
+    # ==========================================
+
+    path(
+        "",
+        pages_views.home,
+        name="home"
+    ),
+
+    path(
+        "logout/",
+        views.logout_view,
+        name="logout"
+    ),
 
     # ==========================================
     # PRODUCTOS
     # ==========================================
 
     path(
-        "",
+        "productos/",
         views.product_model_list_view,
-        name="list"
+        name="productos"
     ),
 
     path(
@@ -74,7 +91,7 @@ urlpatterns = [
     ),
 
     # ==========================================
-    # DATOS DE LA GRÁFICA
+    # DATOS PARA LA GRÁFICA
     # ==========================================
 
     path(
@@ -84,12 +101,22 @@ urlpatterns = [
     ),
 
     # ==========================================
-    # REGISTRO DE USUARIOS
+    # REGISTRO
     # ==========================================
 
     path(
         "registro/",
         views.registro_view,
         name="registro"
+    ),
+
+    # ==========================================
+    # LOGIN
+    # ==========================================
+
+    path(
+        "login/",
+        views.login_view,
+        name="login"
     ),
 ]

@@ -8,11 +8,33 @@ class ProductModelForm(forms.ModelForm):
 
     class Meta:
         model = ProductModel
+
         fields = [
             "title",
             "price",
             "description",
         ]
+
+        widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    "placeholder": "Nombre del producto"
+                }
+            ),
+
+            "price": forms.NumberInput(
+                attrs={
+                    "placeholder": "Precio"
+                }
+            ),
+
+            "description": forms.Textarea(
+                attrs={
+                    "placeholder": "Describe tu producto",
+                    "rows": 4
+                }
+            ),
+        }
 
 
 class UserRegistrationForm(forms.ModelForm):

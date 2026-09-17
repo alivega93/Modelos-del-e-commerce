@@ -1,14 +1,82 @@
-{% include "ecommerce/search.html" %}
-{% include "ecommerce/messages.html" %}
+{% extends "layouts/index.html" %}
 
-<h1>
-    Vista de listado
-</h1>
+{% block title %}
+Productos | MiTienda
+{% endblock %}
 
-{% for product in products %}
-    <li>
-        <a href="/ecommerce/{{ product.id }}">{{ product.title }}</a>
-        - {{ product.price }}
-        - {{ product.color }}
-    </li>
-{% endfor %}
+
+{% block hero %}
+{% endblock %}
+
+
+{% block section_title %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="products-section">
+
+    {% include "ecommerce/search.html" %}
+    {% include "ecommerce/messages.html" %}
+
+    <div class="products-header">
+
+        <div>
+
+            <h1>
+                {% if my_products %}
+                    Mis productos
+                {% else %}
+                    Productos disponibles
+                {% endif %}
+            </h1>
+
+            <p>
+                {% if my_products %}
+                    Administra los productos que has publicado.
+                {% else %}
+                    Descubre nuestra selección de productos.
+                {% endif %}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="products-grid">
+
+        {% for product in products %}
+
+            {% include "ecommerce/product-item.html" with product=product %}
+
+        {% empty %}
+
+            <div class="empty-products">
+
+                <h3>
+                    {% if my_products %}
+                        No tienes productos publicados
+                    {% else %}
+                        No hay productos disponibles
+                    {% endif %}
+                </h3>
+
+                <p>
+                    {% if my_products %}
+                        Actualmente no has publicado ningún producto.
+                    {% else %}
+                        Actualmente no hay productos para mostrar.
+                    {% endif %}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -17,7 +17,7 @@ class ProductModel(BasePublishModel):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     def get_absolute_url(self):
-        return f"/product/{self.slug}"
+        return f"/ecommerce/{self.id}"
 
     def save(self, *args, **kwargs):
         validate_blocked_words(self.title)
